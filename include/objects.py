@@ -6,10 +6,12 @@ import numpy as np
 class Ball:
     def __init__(self, x, y, img):
         # sprite image and size
+        self.d = 30 # diameter in pixels
         self.surface = pygame.image.load(img).convert_alpha()
-        self.surface = pygame.transform.scale(self.surface, (30, 30))
+        self.surface = pygame.transform.scale(self.surface, (self.d, self.d))
         self.x = np.array([x, y]) # coordinates
         self.v = np.array([0, 0]) # velocity
+        self.v_old = np.array([0, 0]) # previous velocity
         self.a = np.array([0, 0]) # acceleration
         self.mass = 0.165
         self.friction = 0.07
