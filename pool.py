@@ -56,6 +56,7 @@ while True:
                 print("v0: ", ball.v[0])
                 print("v1: ", v1)
                 print("v2: ", v2)
+                print("test")
 
                 ball.v = np.array([math.sin(contact_angle)*v1, math.cos(contact_angle+np.pi/2)*v2])
                 others.v = np.array([math.cos(contact_angle)*v2, math.sin(contact_angle)*v2])
