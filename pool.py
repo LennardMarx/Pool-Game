@@ -58,6 +58,7 @@ while True:
 
     # reset external cue force
     cue_force = 0
+    print("2")
     
 # ========= event checks ====================================
     cue_ball.x[0], cue_ball.x[1] = checkEvents(cue_ball.x[0], cue_ball.x[1])
