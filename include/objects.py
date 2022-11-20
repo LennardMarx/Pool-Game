@@ -7,6 +7,7 @@ class Ball:
     def __init__(self, x, y, img):
         # sprite image and size
         self.d = 30 # diameter in pixels
+        self.r = self.d/2
         self.surface = pygame.image.load(img).convert_alpha()
         self.surface = pygame.transform.scale(self.surface, (self.d, self.d))
         self.x = np.array([x, y]) # coordinates
