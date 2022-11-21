@@ -1,2 +1,5 @@
 # PDFs
 *.pdf
+
+# GIMP files
+*.xcf
