@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Pool
+Exec=python3 /home/lennard/Projects/Pool/pool.py
+Icon=/home/lennard/Projects/Pool/resources/pool_icon.png
+Path=/home/lennard/Projects/Pool
+Terminal=false
+

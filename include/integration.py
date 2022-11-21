@@ -1,3 +1,10 @@
+#===============================================================
+# Verlet Integration
+# Created by: Lennard Marx
+# 
+#===============================================================
+
+
 import pygame
 import numpy as np
 from objects import Ball
