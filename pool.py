@@ -11,10 +11,9 @@ import pygame
 import sys
 import math
 import numpy as np
-#np.seterr(divide='ignore', invalid='ignore')
 
 # own files
-sys.getfilesystemencoding()
+# sys.getfilesystemencoding()
 sys.path.insert(0, '/home/lennard/Projects/Pool/include')
 from event_checks import checkEvents, checkContacts
 from objects import Ball, Cue_Ball, Table, Cue
@@ -22,10 +21,12 @@ from integration import integrate
 
 # initialize pygame and create window
 pygame.init()
+window = pygame.display.set_mode((1100, 600))
+pygame.display.set_caption("Pool")
+
+# changing the icon in the task bar
 pygame_icon = pygame.image.load("/home/lennard/Projects/Pool/resources/pool_icon.png")
 pygame.display.set_icon(pygame_icon)
-window = pygame.display.set_mode((1100, 600))
-pygame.display.set_caption("Pool Test")
 
 # clock for controlling the framerate
 clock = pygame.time.Clock()
@@ -53,10 +54,10 @@ test_font = pygame.font.Font("resources/RetroGaming.ttf", 25)
 text_surface = test_font.render("Hallo", False, "Yellow")
 
 # velvet integration variables
-dt = 0.01 # time step
-scale = 526 # /(dt/0.01) # pool ball: 57mm & 30pixels -> 1 meter ~ 526pixels normalized to timestep 0.01
+dt = 0.005 # time step
+scale = 526*2 # /(dt/0.01) # pool ball: 57mm & 30pixels -> 1 meter ~ 526pixels normalized to timestep 0.01
 
-cue_force = 20 # applied total force in Newton
+cue_force = 35 # applied total force in Newton
 angle = 0.5 # anlge of force in degree
 angle = math.radians(angle) # converstion to radians
 
@@ -82,18 +83,10 @@ while True:
     cue.shoot = False
 
     # verlet integration for all balls
-    # MAKE LOOP!
-    for x in range(10): # 10 integrations per time step
-        integrate(cue_ball, applied_cue_force, scale, dt/10)
-        integrate(ball_1, 0, scale, dt/10)
-        integrate(ball_2, 0, scale, dt/10)
-        integrate(ball_3, 0, scale, dt/10)
-        integrate(ball_4, 0, scale, dt/10)
-        integrate(ball_5, 0, scale, dt/10)
-        integrate(ball_6, 0, scale, dt/10)
-        integrate(ball_7, 0, scale, dt/10)
-        integrate(ball_8, 0, scale, dt/10)
-        integrate(ball_9, 0, scale, dt/10)
+    # for x in range(10): # 10 integrations per time step
+    integrate(cue_ball, applied_cue_force, scale, dt)
+    for ball in balls[1:balls.size]:
+        integrate(ball, 0, scale, dt)
     
 #========== render screen =====================================
     window.fill("black")
@@ -101,16 +94,8 @@ while True:
     window.blit(cue.surface, (cue.x, cue.y))
 
     # MAKE LOOP!
-    window.blit(cue_ball.surface, (cue_ball.x[0] - cue_ball.r, cue_ball.x[1] - cue_ball.r))
-    window.blit(ball_1.surface, (ball_1.x[0] - ball_1.r, ball_1.x[1] - ball_1.r))
-    window.blit(ball_2.surface, (ball_2.x[0] - ball_2.r, ball_2.x[1] - ball_2.r))
-    window.blit(ball_3.surface, (ball_3.x[0] - ball_3.r, ball_3.x[1] - ball_3.r))
-    window.blit(ball_4.surface, (ball_4.x[0] - ball_4.r, ball_4.x[1] - ball_4.r))
-    window.blit(ball_5.surface, (ball_5.x[0] - ball_5.r, ball_5.x[1] - ball_5.r))
-    window.blit(ball_6.surface, (ball_6.x[0] - ball_6.r, ball_6.x[1] - ball_6.r))
-    window.blit(ball_7.surface, (ball_7.x[0] - ball_7.r, ball_7.x[1] - ball_7.r))
-    window.blit(ball_8.surface, (ball_8.x[0] - ball_8.r, ball_8.x[1] - ball_8.r))
-    window.blit(ball_9.surface, (ball_9.x[0] - ball_9.r, ball_9.x[1] - ball_9.r))
+    for ball in balls:
+        window.blit(ball.surface, (ball.x[0] - ball.r, ball.x[1] - ball.r))
 
     #window.blit(text_surface, (300, 300))
 

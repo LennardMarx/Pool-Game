@@ -10,7 +10,6 @@ import numpy as np
 from objects import Ball
 
 def integrate(ball, force, scale, dt):
-    ball.v_old = ball.v
     # velocity verlet integration
     half_step_v = ball.v + ball.a*(dt*0.5)
     new_x = ball.x + (half_step_v*dt)*scale

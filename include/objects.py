@@ -18,10 +18,9 @@ class Ball:
         self.surface = pygame.transform.scale(self.surface, (self.d, self.d))
         self.x = np.array([x, y]) # coordinates
         self.v = np.array([0, 0]) # velocity
-        self.v_old = np.array([0, 0]) # previous velocity
         self.a = np.array([0, 0]) # acceleration
         self.mass = 0.165
-        self.friction = 0.07
+        self.friction = 0.1
     def apply_forces(self, external):
         self.fric_force = 9.81*self.mass*self.friction*self.v # table cloth friction
         self.fric_acc = self.fric_force/self.mass # acc from table cloth friction
