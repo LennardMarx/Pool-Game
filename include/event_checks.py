@@ -1,6 +1,5 @@
 import pygame
-
-def checkEvents(x, y):
+def checkEvents(cue):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -17,4 +16,6 @@ def checkEvents(x, y):
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 exit()
-    return x, y
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                cue.shoot = True

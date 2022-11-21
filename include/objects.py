@@ -39,3 +39,4 @@ class Cue:
         self.y = y
         self.surface = pygame.image.load(img).convert_alpha()
         self.surface = pygame.transform.scale(self.surface, (400, 10))
+        self.shoot = False

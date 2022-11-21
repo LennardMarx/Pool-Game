@@ -38,9 +38,10 @@ text_surface = test_font.render("Hallo", False, "Yellow")
 dt = 0.01 # time step
 scale = 526 # /(dt/0.01) # pool ball: 57mm & 30pixels -> 1 meter ~ 526pixels normalized to timestep 0.01
 
-cue_force = 17 # applied total force in Newton
-angle = 1 # anlge of force in degree
+cue_force = 30 # applied total force in Newton
+angle = 0.5 # anlge of force in degree
 angle = math.radians(angle) # converstion to radians
+
 
 # ========= game loop ======================================0
 while True:
@@ -54,29 +55,40 @@ while True:
                 u2 = others.v-(2*ball.mass/(ball.mass + others.mass))*((np.dot(others.v - ball.v, others.x - ball.x))/(np.linalg.norm(ball.x - others.x)**2))*(others.x - ball.x)
                 ball.v = u1
                 others.v = u2
+        if ball.x[0] < 105 + ball.r:
+            ball.v[0] = -ball.v[0]
+        if ball.x[0] > 1000 - ball.r:
+            ball.v[0] = -ball.v[0]
+        if ball.x[1] < 105 + ball.r:
+            ball.v[1] = -ball.v[1]
+        if ball.x[1] > 500 - ball.r:
+            ball.v[1] = -ball.v[1]
+        
+    mouse = pygame.mouse.get_pos()
+    # print(cue_ball.x)
+    angle = np.arctan2(cue_ball.x[1] - mouse[1], cue_ball.x[0] - mouse[0])
 
-
-    # force divided into 2 dimensions
-    applied_cue_force = np.array([math.cos(angle)*cue_force, math.sin(angle)*cue_force])
-
+    checkEvents(cue)
+    applied_cue_force = 0
+    if cue.shoot == True:
+        applied_cue_force = np.array([math.cos(angle)*cue_force, math.sin(angle)*cue_force])
+    cue.shoot = False
     # verlet integration
     #for x in range(10):
     integrate(cue_ball, applied_cue_force, scale, dt)
     integrate(ball_1, 0, scale, dt)
     integrate(ball_8, 0, scale, dt)
     # reset external cue force
-    cue_force = 0
-# ========= event checks ====================================
-    cue_ball.x[0], cue_ball.x[1] = checkEvents(cue_ball.x[0], cue_ball.x[1])
-    
+    #cue_force = 0
+    #shoot = False
 # ========= render screen =====================================
     window.fill("black")
     window.blit(table.surface, (table.x, table.y))
     window.blit(cue.surface, (cue.x, cue.y))
 
-    window.blit(cue_ball.surface, (cue_ball.x[0], cue_ball.x[1]))
-    window.blit(ball_1.surface, (ball_1.x[0], ball_1.x[1]))
-    window.blit(ball_8.surface, (ball_8.x[0], ball_8.x[1]))
+    window.blit(cue_ball.surface, (cue_ball.x[0] - cue_ball.r, cue_ball.x[1] - cue_ball.r))
+    window.blit(ball_1.surface, (ball_1.x[0] - ball_1.r, ball_1.x[1] - ball_1.r))
+    window.blit(ball_8.surface, (ball_8.x[0] - ball_8.r, ball_8.x[1] - ball_8.r))
     
     #window.blit(text_surface, (300, 300))
 
