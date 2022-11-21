@@ -28,7 +28,8 @@ cue = Cue(200, 200, "resources/cue.png")
 cue_ball = Ball(200, 230, "resources/cue_ball.png")
 ball_1 = Ball(750, 250, "resources/ball_1.png")
 ball_8 = Ball(800, 300, "resources/ball_8.png")
-balls = np.array([cue_ball, ball_1, ball_8])
+ball_15 = Ball(775, 275, "resources/ball_15.png")
+balls = np.array([cue_ball, ball_1, ball_8, ball_15])
 
 # display font
 test_font = pygame.font.Font("resources/RetroGaming.ttf", 25)
@@ -38,7 +39,7 @@ text_surface = test_font.render("Hallo", False, "Yellow")
 dt = 0.01 # time step
 scale = 526 # /(dt/0.01) # pool ball: 57mm & 30pixels -> 1 meter ~ 526pixels normalized to timestep 0.01
 
-cue_force = 30 # applied total force in Newton
+cue_force = 20 # applied total force in Newton
 angle = 0.5 # anlge of force in degree
 angle = math.radians(angle) # converstion to radians
 
@@ -78,6 +79,7 @@ while True:
     integrate(cue_ball, applied_cue_force, scale, dt)
     integrate(ball_1, 0, scale, dt)
     integrate(ball_8, 0, scale, dt)
+    integrate(ball_15, 0, scale, dt)
     # reset external cue force
     #cue_force = 0
     #shoot = False
@@ -89,7 +91,8 @@ while True:
     window.blit(cue_ball.surface, (cue_ball.x[0] - cue_ball.r, cue_ball.x[1] - cue_ball.r))
     window.blit(ball_1.surface, (ball_1.x[0] - ball_1.r, ball_1.x[1] - ball_1.r))
     window.blit(ball_8.surface, (ball_8.x[0] - ball_8.r, ball_8.x[1] - ball_8.r))
-    
+    window.blit(ball_15.surface, (ball_15.x[0] - ball_15.r, ball_15.x[1] - ball_15.r))
+
     #window.blit(text_surface, (300, 300))
 
     # update display
