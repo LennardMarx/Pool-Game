@@ -3,3 +3,6 @@
 
 # GIMP files
 *.xcf
+
+# Directories
+pool_env/

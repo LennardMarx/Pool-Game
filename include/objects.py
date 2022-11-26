@@ -1,7 +1,8 @@
 #===============================================================
 # Game Objects
-# Created by: Lennard Marx
 # 
+# This file contains all the objects used in the game 
+# Created by: Lennard Marx
 #===============================================================
 
 import pygame
@@ -11,9 +12,9 @@ import numpy as np
 
 class Ball:
     def __init__(self, x, y, img):
-        # sprite image and size
         self.d = 40 # diameter in pixels
-        self.r = self.d/2
+        self.r = self.d/2 # radius
+        # loading the image and setting the size on the screen
         self.surface = pygame.image.load(img).convert_alpha()
         self.surface = pygame.transform.scale(self.surface, (self.d, self.d))
         self.x = np.array([x, y]) # coordinates
@@ -34,17 +35,19 @@ class Cue_Ball(Ball):
 
 class Table:
     def __init__(self, x, y, img):
-        self.x = np.array([x, y])
-        self.w = 1200
-        self.h = 600
+        self.x = np.array([x, y]) # coordinates
+        self.w = 1400 # width
+        self.h = 700 # height
+        # sprite image and size
         self.surface = pygame.image.load(img).convert_alpha()
         self.surface = pygame.transform.scale(self.surface, (self.w, self.h))
 
 class Cue:
     def __init__(self, x, y, img):
-        self.x = np.array([x, y])
-        self.w = 600
-        self.h = 12
+        self.x = np.array([x, y]) # coordinates
+        self.w = 600 # width
+        self.h = 12 # height
+        # sprite image and size
         self.surface = pygame.image.load(img).convert_alpha()
         self.surface = pygame.transform.scale(self.surface, (self.w, self.h))
-        self.shoot = False
+        self.shoot = False # check if mouse was clicked to apply force to the cue ball
