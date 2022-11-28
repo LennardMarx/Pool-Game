@@ -28,7 +28,7 @@ def checkContacts(balls, table, offset):
     for it, ball in enumerate(balls):
         for others in balls[it+1:]:
             # check for collision, collision only counts of objects move towards each other (dot product)
-            if np.sqrt((others.x[0] - ball.x[0])**2 + (others.x[1] - ball.x[1])**2) <= (ball.d/2 + others.d/2) and np.dot(others.x - ball.x, ball.v - others.v) > 0:
+            if np.sqrt(sum((others.x - ball.x)**2)) <= (ball.r + others.r) and np.dot(others.x - ball.x, ball.v - others.v) > 0:
                 # updating the involved balls velocity vectors
                 u1 = ball.v-(2*others.mass/(ball.mass + others.mass))*((np.dot(ball.v - others.v, ball.x - others.x))/(np.linalg.norm(ball.x - others.x)**2))*(ball.x - others.x)
                 u2 = others.v-(2*ball.mass/(ball.mass + others.mass))*((np.dot(others.v - ball.v, others.x - ball.x))/(np.linalg.norm(ball.x - others.x)**2))*(others.x - ball.x)
