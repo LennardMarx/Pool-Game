@@ -14,7 +14,7 @@ import numpy as np
 
 # own files
 sys.path.insert(0, '/home/lennard/Projects/Pool/include')
-from event_checks import checkEvents, checkContacts
+from event_checks import checkEvents, checkContacts, checkContacts_2
 import objects as obj
 from integration import integrate
 
@@ -40,12 +40,12 @@ offset = np.array([table.x[0] + table.w/2, table.x[1] + table.h/2])
 # creating the balls
 cue_ball = obj.Cue_Ball(-300, 0, "resources/cue_ball.png")
 ball_1 = obj.Ball(200, 0, "resources/ball_1.png")
-ball_2 = obj.Ball(ball_1.x[0] + 35, ball_1.x[1] + 20, "resources/ball_2.png")
-ball_3 = obj.Ball(ball_1.x[0] + 35, ball_1.x[1] - 20, "resources/ball_3.png")
-ball_4 = obj.Ball(ball_1.x[0] + 70, ball_1.x[1] + 40, "resources/ball_4.png")
-ball_5 = obj.Ball(ball_1.x[0] + 70, ball_1.x[1] - 40, "resources/ball_5.png")
-ball_6 = obj.Ball(ball_1.x[0] + 105, ball_1.x[1] + 20, "resources/ball_6.png")
-ball_7 = obj.Ball(ball_1.x[0] + 105, ball_1.x[1] - 20, "resources/ball_7.png")
+ball_2 = obj.Ball(ball_1.x[0] + 35, ball_1.x[1] + 21, "resources/ball_2.png")
+ball_3 = obj.Ball(ball_1.x[0] + 35, ball_1.x[1] - 21, "resources/ball_3.png")
+ball_4 = obj.Ball(ball_1.x[0] + 70, ball_1.x[1] + 42, "resources/ball_4.png")
+ball_5 = obj.Ball(ball_1.x[0] + 70, ball_1.x[1] - 42, "resources/ball_5.png")
+ball_6 = obj.Ball(ball_1.x[0] + 105, ball_1.x[1] + 21, "resources/ball_6.png")
+ball_7 = obj.Ball(ball_1.x[0] + 105, ball_1.x[1] - 21, "resources/ball_7.png")
 ball_8 = obj.Ball(ball_1.x[0] + 140, ball_1.x[1] + 0, "resources/ball_8.png")
 ball_9 = obj.Ball(ball_1.x[0] + 70, ball_1.x[1] + 0, "resources/ball_9.png")
 # array of all balls
@@ -58,15 +58,15 @@ test_font = pygame.font.Font("resources/RetroGaming.ttf", 25)
 text_surface = test_font.render("Hallo", False, "Yellow")
 
 # velvet integration variables
-dt = 0.01 # time step
+dt = np.array([0.01]) # time step, stored in array to pass by reference
 scale = 680 # /(dt/0.01) # pool ball: 57mm & 30pixels -> 1 meter ~ 526pixels normalized to timestep 0.01
 cue_force = 35 # applied total force in Newton
 
 #========== game loop ======================================
 while True:
     # check contacts (brute force)
-    checkContacts(balls, table, offset)
-
+    checkContacts_2(balls, table, offset, dt)
+    print(dt)
     # check for clicks and button presses
     checkEvents(cue)
 
@@ -85,9 +85,13 @@ while True:
     cue.shoot = False
 
     # verlet integration for all balls
-    integrate(cue_ball, applied_cue_force, scale, dt)
+    integrate(cue_ball, applied_cue_force, scale, dt[0])
     for ball in balls[1:]:
-        integrate(ball, 0, scale, dt)
+        integrate(ball, 0, scale, dt[0])
+
+    # reset collision forces
+    for ball in balls:
+        ball.collision_force = 0
 
 #============= render screen =====================================
     window.fill("black") # reset screen by filling it black
@@ -103,4 +107,5 @@ while True:
 
     # update display
     pygame.display.update()
-    clock.tick(100)
+    clock.tick(100*0.01/dt[0])
+    dt[0] = 0.01
