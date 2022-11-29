@@ -6,3 +6,6 @@
 
 # Directories
 pool_env/
+
+# .desktop files
+*.desktop

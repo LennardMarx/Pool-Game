@@ -1,7 +1,7 @@
 #===============================================================
 # Verlet Integration
 # 
-# The function handling the verlet integration
+# Function handling the verlet integration
 # Created by: Lennard Marx
 #===============================================================
 

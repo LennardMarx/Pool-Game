@@ -23,8 +23,6 @@ class Ball:
         self.mass = 0.165
         self.friction = 0.1
         self.collision_force = 0
-        self.M = 1
-        self.k = 1
     def apply_forces(self, external):
         self.fric_force = 9.81*self.mass*self.friction*self.v # *((1/(self.v*self.v))+0.001) # table cloth friction
         self.fric_acc = self.fric_force/self.mass # acc from table cloth friction

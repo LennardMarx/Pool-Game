@@ -3,6 +3,8 @@
 #===============================================================
 # Pool Game
 # 
+# The main script initializing the objects and variables
+# as well as handling the game loop
 # Created by: Lennard Marx
 #===============================================================
 
@@ -59,8 +61,9 @@ text_surface = test_font.render("Hallo", False, "Yellow")
 
 # velvet integration variables
 dt = 0.01 # time step
-scale = 680 # /(dt/0.01) # pool ball: 57mm & 30pixels -> 1 meter ~ 526pixels normalized to timestep 0.01
-cue_force = 35 # applied total force in Newton
+scale = 702 # pool ball: 57mm & 40pixels -> 1 meter ~ 702 pixels
+cue_force = 25 # applied total force in Newton
+framerate = 100
 
 #========== game loop ======================================
 while True:
@@ -85,7 +88,6 @@ while True:
     cue.shoot = False
 
     # verlet integration for all balls
-    #integrate(cue_ball, applied_cue_force, scale, dt)
     for ball in balls:
         integrate(ball, applied_cue_force, scale, dt)
 
@@ -97,10 +99,7 @@ while True:
     # rendering balls
     for ball in balls:
         window.blit(ball.surface, (ball.x[0] + offset[0] - ball.r, ball.x[1] + offset[1] - ball.r))
-        # stop ball a little earlier
-        #if np.linalg.norm(ball.v) < 0.008:
-        #    ball.v = np.array([0, 0])
 
     # update display
     pygame.display.update()
-    clock.tick(100)
+    clock.tick(framerate)

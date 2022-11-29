@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
 #===============================================================
-# Pool Game
+# Pool Game - Intented Method
 # 
+# The main script initializing the objects and variables
+# as well as handling the game loop
 # Created by: Lennard Marx
 #===============================================================
 
@@ -14,7 +16,7 @@ import numpy as np
 
 # own files
 sys.path.insert(0, '/home/lennard/Projects/Pool/include')
-from event_checks import checkEvents, checkContacts, checkContacts_2
+from event_checks import checkEvents, checkContacts_intended
 import objects as obj
 from integration import integrate
 
@@ -58,14 +60,17 @@ test_font = pygame.font.Font("resources/RetroGaming.ttf", 25)
 text_surface = test_font.render("Hallo", False, "Yellow")
 
 # velvet integration variables
-dt = np.array([0.01]) # time step, stored in array to pass by reference
-scale = 680 # /(dt/0.01) # pool ball: 57mm & 30pixels -> 1 meter ~ 526pixels normalized to timestep 0.01
+dt_base = 0.01 # base timestep
+dt = np.array([dt_base]) # variable time step, stored in array to pass by reference
+scale = 702 # pool ball: 57mm & 40pixels -> 1 meter ~ 702 pixels
 cue_force = 25 # applied total force in Newton
+k = 0.7 # coefficient of proportionality between overlap and force
+framerate_base = 100
 
 #========== game loop ======================================
 while True:
     # check contacts (brute force)
-    checkContacts_2(balls, table, offset, dt)
+    checkContacts_intended(balls, table, offset, dt, k)
 
     # check for clicks and button presses
     checkEvents(cue)
@@ -85,12 +90,8 @@ while True:
     cue.shoot = False
 
     # verlet integration for all balls
-    #integrate(cue_ball, applied_cue_force, scale, dt[0])
     for ball in balls:
         integrate(ball, applied_cue_force, scale, dt[0])
-
-    # reset collision forces
-    for ball in balls:
         ball.collision_force = 0
 
 
@@ -102,11 +103,8 @@ while True:
     # rendering balls
     for ball in balls:
         window.blit(ball.surface, (ball.x[0] + offset[0] - ball.r, ball.x[1] + offset[1] - ball.r))
-        # stop ball a little earlier
-        #if np.linalg.norm(ball.v) < 0.008:
-        #    ball.v = np.array([0, 0])
 
     # update display
     pygame.display.update()
-    clock.tick(100*0.01/dt[0])
-    dt[0] = 0.01
+    clock.tick(framerate_base*dt_base/dt[0])
+    dt = np.array([dt_base]) # reset time step
