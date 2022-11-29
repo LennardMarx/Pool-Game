@@ -85,9 +85,9 @@ while True:
     cue.shoot = False
 
     # verlet integration for all balls
-    integrate(cue_ball, applied_cue_force, scale, dt)
-    for ball in balls[1:]:
-        integrate(ball, 0, scale, dt)
+    #integrate(cue_ball, applied_cue_force, scale, dt)
+    for ball in balls:
+        integrate(ball, applied_cue_force, scale, dt)
 
 #============= render screen =====================================
     window.fill("black") # reset screen by filling it black

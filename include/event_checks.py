@@ -49,11 +49,11 @@ def checkContacts_2(balls, table, offset, dt):
             # check for collision, collision only counts of objects move towards each other (dot product)
             if np.sqrt(sum((others.x - ball.x)**2)) <= (ball.r + others.r): # and np.dot(others.x - ball.x, ball.v - others.v) > 0:
                 overlap = (ball.r + others.r) - np.sqrt(sum((others.x - ball.x)**2))
-                force = overlap
+                M = ball.mass*others.mass/(ball.mass+others.mass)
+                force = 0.7*overlap
                 angle = np.arctan2(ball.x[1] - others.x[1], ball.x[0] - others.x[0]) #+ np.pi/2
                 ball.collision_force = np.array([math.cos(angle)*force, math.sin(angle)*force])
                 others.collision_force = -ball.collision_force
-                M = ball.mass*others.mass/(ball.mass+others.mass)
                 k = force/overlap
                 dt[0] = 0.01*np.sqrt(M/k)
                 

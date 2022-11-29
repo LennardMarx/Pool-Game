@@ -23,20 +23,23 @@ class Ball:
         self.mass = 0.165
         self.friction = 0.1
         self.collision_force = 0
+        self.M = 1
+        self.k = 1
     def apply_forces(self, external):
-        #vec = 0
-        #if abs(np.linalg.norm(self.v)) > 0:
-        #    vec = (self.v/np.linalg.norm(self.v))*self.v**2
+        self.fric_force = 9.81*self.mass*self.friction*self.v # *((1/(self.v*self.v))+0.001) # table cloth friction
+        self.fric_acc = self.fric_force/self.mass # acc from table cloth friction
+        self.collision_acc = self.collision_force/self.mass
+        return -self.fric_acc+self.collision_acc # total applied acc
+        self.collision_force = 0
+
+class Cue_Ball(Ball):
+    def apply_forces(self, external): # overridden from Ball class
         self.fric_force = 9.81*self.mass*self.friction*self.v # *((1/(self.v*self.v))+0.001) # table cloth friction
         self.fric_acc = self.fric_force/self.mass # acc from table cloth friction
         self.ext_acc = external/self.mass # acc from external forces
         self.collision_acc = self.collision_force/self.mass
         return self.ext_acc-self.fric_acc+self.collision_acc # total applied acc
         self.collision_force = 0
-
-class Cue_Ball(Ball):
-    def move(self):
-        pass
 
 class Table:
     def __init__(self, x, y, img):
